@@ -1,15 +1,17 @@
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
-import { AppModule } from './app.module';
+import { AppModule } from './app.module'
+import { NestFactory } from '@nestjs/core'
+import { Transport } from '@nestjs/microservices'
+import { Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 
-const logger = new Logger('Main');
+const logger = new Logger('Main')
+const configService = new ConfigService()
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://user:TmB52Q1lVFWE@34.205.191.150:5672/smartranking'],
+      urls: [`amqp://${configService.get<string>('RABBITMQ_USER')}:${configService.get<string>('RABBITMQ_PASSWORD')}@${configService.get<string>('RABBITMQ_URL')}`],
       noAck: false,
       queue: 'admin-backend',
     },

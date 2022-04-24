@@ -9,20 +9,20 @@ const ackErrors: string[] = ['E11000']
 export class JogadoresController {
 
     logger = new Logger(JogadoresController.name)
-    constructor(private readonly jogadoresService: JogadoresService) {}
+    constructor(private readonly jogadoresService: JogadoresService) { }
 
     @EventPattern('criar-jogador')
     async criarJogador(@Payload() jogador: Jogador, @Ctx() context: RmqContext) {
         const channel = context.getChannelRef()
         const originalMsg = context.getMessage()
         try {
-            this.logger.log(`jogador: ${JSON.stringify(jogador)}`)
+            this.logger.log(`jogadores: ${JSON.stringify(jogador)}`)
             await this.jogadoresService.criarJogador(jogador)
             await channel.ack(originalMsg)
-        } catch(error) {
+        } catch (error) {
             this.logger.log(`error: ${JSON.stringify(error.message)}`)
             const filterAckError = ackErrors.filter(ackError => error.message.includes(ackError))
-    
+
             if (filterAckError.length > 0) {
                 await channel.ack(originalMsg)
             }
@@ -37,11 +37,11 @@ export class JogadoresController {
             if (_id) {
                 return await this.jogadoresService.consultarJogadorPeloId(_id);
             } else {
-                return await this.jogadoresService.consultarTodosJogadores();  
-            } 
+                return await this.jogadoresService.consultarTodosJogadores();
+            }
         } finally {
             await channel.ack(originalMsg)
-        }      
+        }
     }
 
     @EventPattern('atualizar-jogador')
@@ -54,13 +54,13 @@ export class JogadoresController {
             const jogador: Jogador = data.jogador
             await this.jogadoresService.atualizarJogador(_id, jogador)
             await channel.ack(originalMsg)
-        } catch(error) {
+        } catch (error) {
             const filterAckError = ackErrors.filter(ackError => error.message.includes(ackError))
 
             if (filterAckError.length > 0) {
                 await channel.ack(originalMsg)
             }
-        }  
+        }
     }
 
     @EventPattern('deletar-jogador')
@@ -70,9 +70,9 @@ export class JogadoresController {
         try {
             await this.jogadoresService.deletarJogador(_id)
             await channel.ack(originalMsg)
-        } catch(error) {
+        } catch (error) {
             const filterAckError = ackErrors.filter(ackError => error.message.includes(ackError))
-    
+
             if (filterAckError.length > 0) {
                 await channel.ack(originalMsg)
             }

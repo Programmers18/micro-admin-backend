@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CategoriasModule } from './categorias/categorias.module';
 import { JogadoresModule } from './jogadores/jogadores.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://raondup:elxXCZQnQhYCzFHn@cluster0.3vglm.mongodb.net/sradmbackend?retryWrites=true&w=majority',
+      'mongodb+srv://raondup:rdwqjY5e6HBZzBAV@cluster0.3vglm.mongodb.net/sradmbackend',
       {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -14,10 +15,11 @@ import { JogadoresModule } from './jogadores/jogadores.module';
         useFindAndModify: false,
       },
     ),
+    ConfigModule.forRoot({ isGlobal: true }),
     CategoriasModule,
     JogadoresModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
