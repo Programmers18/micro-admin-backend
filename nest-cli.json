@@ -1,4 +1,7 @@
 {
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+    "semi": false,
+    "trailingComma": "all",
+    "singleQuote": true,
+	"printWidth": 100,
+    "tabWidth": 4
 }

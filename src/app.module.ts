@@ -10,9 +10,7 @@ import { ConfigModule } from '@nestjs/config';
       'mongodb+srv://raondup:rdwqjY5e6HBZzBAV@cluster0.3vglm.mongodb.net/sradmbackend',
       {
         useNewUrlParser: true,
-        useCreateIndex: true,
         useUnifiedTopology: true,
-        useFindAndModify: false,
       },
     ),
     ConfigModule.forRoot({ isGlobal: true }),
